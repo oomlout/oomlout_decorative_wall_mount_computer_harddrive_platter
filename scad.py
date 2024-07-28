@@ -26,9 +26,9 @@ def make_scad(**kwargs):
     # default variables
     if True:
         kwargs["size"] = "oobb"
-        kwargs["width"] = 12
-        kwargs["height"] = 12
-        kwargs["thickness"] = 6
+        kwargs["width"] = 1
+        kwargs["height"] = 1
+        kwargs["thickness"] = 3
 
     # project_variables
     if True:
@@ -70,23 +70,37 @@ def get_base(thing, **kwargs):
     #pos = copy.deepcopy(pos)
     #pos[2] += -20
 
-    #add plate
+    #add little cylinder
     p3 = copy.deepcopy(kwargs)
     p3["type"] = "p"
-    p3["shape"] = f"oobb_plate"    
+    p3["shape"] = f"oobb_cylinder"    
     p3["depth"] = depth
+    p3["radius"] = 24.5/2
     #p3["m"] = "#"
     pos1 = copy.deepcopy(pos)         
+    pos1[2] += -depth/2
     p3["pos"] = pos1
     oobb_base.append_full(thing,**p3)
-    #add holes
+
+    #add big cylinder
     p3 = copy.deepcopy(kwargs)
     p3["type"] = "p"
-    p3["shape"] = f"oobb_holes"
-    p3["both_holes"] = True  
-    p3["depth"] = depth
-    p3["holes"] = "perimeter"
+    p3["shape"] = f"oobb_cylinder"
+    dep = 1.5
+    p3["depth"] = dep
+    p3["radius"] = 30/2
     #p3["m"] = "#"
+    pos1 = copy.deepcopy(pos)
+    pos1[2] += -dep/2
+    p3["pos"] = pos1
+    oobb_base.append_full(thing,**p3)
+
+    #add holes
+    p3 = copy.deepcopy(kwargs)
+    p3["type"] = "n"
+    p3["shape"] = f"oobb_screw_countersunk"
+    p3["radius_name"] = "m3_screw_wood"
+    p3["m"] = "#"
     pos1 = copy.deepcopy(pos)         
     p3["pos"] = pos1
     oobb_base.append_full(thing,**p3)
